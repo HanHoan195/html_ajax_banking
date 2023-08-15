@@ -279,8 +279,8 @@
                         <div class="row mt-3">
                             <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
                                 <label for="recipientSelect">Recipient</label>
-                                <select class="form-select" name="recipient.id" id="recipientSelect">
-                                    <option value="" selected disabled>Select recipient</option>
+                                <select class="form-select" name="recipient" id="recipientSelect">
+                                    <!-- <option value="" selected disabled>Select recipient</option> -->
                                 </select>
                             </div>
                             <div class="mb-3 float-left col-lg-3 col-sm-12 col-md-6">
@@ -434,6 +434,10 @@
                         align: 'topright'
                     });
                     resetModal();
+                    handleAddEventShowModalUpdate();
+                    handleAddEventShowModalDeposit();
+                    handleAddEventShowModalWithdraw();
+                    handleAddEventShowModalTransfer();
 
                 })
                 .fail((error) => {
@@ -754,7 +758,7 @@
                     recipientSelect.append($('<option>').val('').text('Select recipient'));
 
                     $.each(customers, function (index, customer) {
-                        if (customer.id !== customerId && customer.deleted === false) {
+                        if (customer.id !== customerId && customer.deleted === 0) {
                             recipientSelect.append($('<option>').val(customer.id).text(customer.id + ' - ' + customer.fullName));
                         }
                     });
@@ -858,6 +862,13 @@
             })
         })
 
+        // điều chỉnh total tăng thêm nhập số tiền
+        document.addEventListener("input", () => {
+            let fee = Number(document.getElementById("fees").value);
+            let transferAmount = Number(document.getElementById("transfer").value);
+            let transactionFee = transferAmount * fee / 100;
+            document.getElementById("total").value = Math.round(transactionFee + transferAmount);
+        })
 
     </script>
 </body>
